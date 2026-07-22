@@ -1,0 +1,26 @@
+name: Deploy Horizon source
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.actor == 'Coneys-Network'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Expand Horizon source
+        run: |
+          unzip -q Horizon-source.zip -d staging
+          cp -a staging/Horizon/. .
+          rm -rf staging Horizon-source.zip .github/workflows/bootstrap.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy Horizon source"
+          git push
