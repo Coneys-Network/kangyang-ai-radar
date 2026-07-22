@@ -1,0 +1,162 @@
+{
+  "version": "1.0",
+  "ai": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "base_url": "https://api.deepseek.com",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "temperature": 0.2,
+    "max_tokens": 6000,
+    "throttle_sec": 1,
+    "analysis_concurrency": 2,
+    "enrichment_concurrency": 2,
+    "languages": ["zh"]
+  },
+  "sources": {
+    "github": [],
+    "hackernews": {
+      "enabled": false,
+      "fetch_top_stories": 20,
+      "min_score": 150,
+      "category": "ai-tools"
+    },
+    "rss": [
+      {
+        "name": "World Health Organization News",
+        "url": "https://www.who.int/rss-feeds/news-english.xml",
+        "enabled": true,
+        "category": "health-policy"
+      },
+      {
+        "name": "Nature Medicine",
+        "url": "https://www.nature.com/nm.rss",
+        "enabled": true,
+        "category": "clinical-research"
+      },
+      {
+        "name": "npj Digital Medicine",
+        "url": "https://www.nature.com/npjdigitalmed.rss",
+        "enabled": true,
+        "category": "digital-health"
+      },
+      {
+        "name": "MobiHealthNews",
+        "url": "https://www.mobihealthnews.com/feed",
+        "enabled": true,
+        "category": "digital-health"
+      }
+    ],
+    "reddit": {
+      "enabled": true,
+      "subreddits": [
+        {
+          "subreddit": "HealthIT",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 12,
+          "min_score": 8,
+          "category": "digital-health"
+        },
+        {
+          "subreddit": "longevity",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 10,
+          "min_score": 10,
+          "category": "aging-longevity"
+        },
+        {
+          "subreddit": "Bioinformatics",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 10,
+          "min_score": 10,
+          "category": "clinical-research"
+        }
+      ],
+      "users": [],
+      "fetch_comments": 3
+    },
+    "telegram": {
+      "enabled": false,
+      "channels": []
+    },
+    "ossinsight": {
+      "enabled": false,
+      "period": "past_24_hours",
+      "languages": ["Python"],
+      "keywords": ["health", "medical", "clinical", "aging"],
+      "min_stars": 10,
+      "max_items": 10,
+      "category": "ai-tools"
+    },
+    "gdelt": {
+      "enabled": true,
+      "query": "artificial intelligence healthcare OR artificial intelligence medical OR artificial intelligence aging OR artificial intelligence longevity",
+      "mode": "ArtList",
+      "max_records": 40,
+      "timespan": "24h",
+      "language": "english",
+      "country": null,
+      "category": "global-health-ai"
+    },
+    "google_news": {
+      "enabled": true,
+      "query": "(康养 OR 银发经济 OR 老年健康 OR 长期照护 OR 医疗健康) (人工智能 OR AI OR 大模型)",
+      "language": "zh-CN",
+      "country": "CN",
+      "ceid": "CN:zh-Hans",
+      "max_results": 40,
+      "category": "china-health-ai"
+    }
+  },
+  "filtering": {
+    "ai_score_threshold": 7.0,
+    "time_window_hours": 24,
+    "max_items": 12,
+    "category_groups": {
+      "research": {
+        "name": "临床与科研",
+        "limit": 3,
+        "categories": ["clinical-research"]
+      },
+      "product": {
+        "name": "医疗 AI 与产品",
+        "limit": 3,
+        "categories": ["digital-health", "global-health-ai", "ai-tools"]
+      },
+      "care": {
+        "name": "康养与老龄化",
+        "limit": 3,
+        "categories": ["aging-longevity", "china-health-ai"]
+      },
+      "policy": {
+        "name": "政策与公共卫生",
+        "limit": 2,
+        "categories": ["health-policy"]
+      }
+    },
+    "default_group": "other",
+    "default_group_limit": 1
+  },
+  "webhook": {
+    "enabled": false,
+    "url_env": "HORIZON_WEBHOOK_URL",
+    "delivery": "summary",
+    "overview_position": "first",
+    "platform": "generic",
+    "layout": "markdown",
+    "fallback_layout": "markdown",
+    "languages": ["zh"],
+    "request_body": {
+      "msgtype": "markdown",
+      "markdown": {
+        "content": "## #{message_title}\n\n#{summary?limit=3500&split=---}"
+      }
+    },
+    "headers": ""
+  }
+}
